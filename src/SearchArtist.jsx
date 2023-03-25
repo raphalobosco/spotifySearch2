@@ -1,34 +1,33 @@
 import { useState, useEffect } from 'react';
 import Results from './Results';
-// import getTokenAPI from './getToken';
-
-// const clientID = import.meta.env.REACT_APP_CLIENT_ID
-// const clientSecret = import.meta.env.REACT_APP_CLIENT_SECRET
 
 const SearchArtist = ({ artistSearch }) => {
     const [artist, setArtist] = useState('');
-    const [token, setToken] = useState();
+    const [token, setToken] = useState('');
+
+    const getToken = async () => {
+        const authOptions = {
+
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${btoa(`${import.meta.env.VITE_CLIENT_ID}:${import.meta.env.VITE_CLIENT_SECRET}`)}`,
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: 'grant_type=client_credentials'
+        };
+
+        try {
+            const response = await fetch('https://accounts.spotify.com/api/token', authOptions);
+            const data = await response.json();
+            setToken(data.access_token);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        const getToken = async () => {
-            const authOptions = {
-                url: 'https://accounts.spotify.com/api/token',
-                headers: {
-                    'Authorization': 'Basic ' + (new Buffer(import.meta.env.REACT_APP_CLIENT_ID + ':' + import.meta.env.REACT_APP_CLIENT_SECRET).toString('base64'))
-                },
-                form: {
-                    grant_type: 'client_credentials'
-                },
-                json: true
-            };
-            try {
-                const response = await axios.post(authOptions.url, authOptions.form, { headers: authOptions.headers });
-                const { access_token } = response.data;
-                setToken(access_token);
-            } catch (error) {
-                console.log(error);
-            }
-        };
+
         getToken();
     }, []);
 
@@ -50,12 +49,14 @@ const SearchArtist = ({ artistSearch }) => {
         fetchData();
     }, [artistSearch, token]);
 
+
+
     return (
         <>
+
             {artist ? <Results props={artist} /> : <div>Loading...</div>}
         </>
     );
-}
-
+};
 
 export default SearchArtist;

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import SearchArtist from './SearchArtist'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputForm from './InputForm'
+import SavedAlbums from './SavedAlbums'
 
 function App() {
 
-  const [search, setSearch] = useState()
+  const [search, setSearch] = useState('')
 
   const randomArray = ["Beyoncé",
     "The Beatles",
@@ -17,6 +18,11 @@ function App() {
     "Radiohead",
     "Bob Marley",
     "David Bowie",]
+
+
+  const handleSaved = (e) => {
+
+  }
 
 
 
