@@ -35,9 +35,10 @@ function App() {
 
   return (
     <div className="App container">
+
       <div className="row justify-content-center" >
         <div className='col-12 col-lg-9 col-xl-6'>
-          <InputForm search={search} setSearch={setSearch} />
+          <InputForm setSearch={setSearch} />
           <SearchArtist artistSearch={search ? search : randomQ} />
         </div>
       </div>
